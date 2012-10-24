@@ -25,7 +25,7 @@
         <groupId>org.jclouds.tweetstore</groupId>    
         <artifactId>tweetstore-project</artifactId>
         <version>1.6.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../project/pom.xml</relativePath>
     </parent>
     <artifactId>tweetstore-cloudfoundry-spring</artifactId>
     <packaging>war</packaging>
