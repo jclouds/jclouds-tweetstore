@@ -65,7 +65,7 @@ public class PlatformServicesInitializer implements ServletContextListener {
     }
 
     protected static String getBaseUrl(ServletContext context) {
-        // use the public URL while https://support.heroku.com/requests/51088 is open
+        // use the public URL - see https://support.heroku.com/requests/51088
         return format("http://%s:%s/%s", checkNotNull(System.getenv(HOST_VARIABLE), HOST_VARIABLE), 
                 checkNotNull(System.getenv(PORT_VARIABLE), PORT_VARIABLE), context.getContextPath());
     }
