@@ -62,7 +62,7 @@ public class GoogleDevServer {
             }
         });
         server.start();
-        TimeUnit.SECONDS.sleep(30);
+        TimeUnit.SECONDS.sleep(60);
     }
 
     private static void storeProperties(String filename, Properties props) throws IOException {
