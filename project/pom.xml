@@ -249,6 +249,16 @@
           <!-- see http://jira.codehaus.org/browse/MWAR-248 -->
           <packagingExcludes>WEB-INF/web.xml</packagingExcludes>
           <webResources>
+            <!-- overrides for src/main/platform for testing -->
+            <resource>
+              <directory>src/test/platform</directory>
+              <targetPath>WEB-INF</targetPath>
+              <filtering>true</filtering>
+              <excludes>
+                <!-- present in TweetStore instances with no platform files to ensure the directory is stored in git -->
+                <exclude>.gitignore</exclude>
+              </excludes>
+            </resource>
             <resource>
               <directory>src/main/platform</directory>
               <targetPath>WEB-INF</targetPath>
