@@ -6,3 +6,8 @@
 *.ear
 
 target
+
+# Eclipse project files
+.settings
+.classpath
+.project
