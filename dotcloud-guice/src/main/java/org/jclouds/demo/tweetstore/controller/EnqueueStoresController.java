@@ -84,7 +84,7 @@ public class EnqueueStoresController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!nullToEmpty(request.getHeader("X-Heroku-Cron")).equals("true")) {
+        if (!nullToEmpty(request.getHeader("X-Dotcloud-Cron")).equals("true")) {
             response.sendError(401);
         }
 
