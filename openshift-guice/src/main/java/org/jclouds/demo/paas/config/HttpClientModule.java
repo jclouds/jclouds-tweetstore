@@ -25,12 +25,10 @@ import static org.jclouds.Constants.*;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
-import javax.ws.rs.core.UriBuilder;
 
 import org.jclouds.demo.tweetstore.config.util.PropertiesLoader;
 
 import com.google.inject.AbstractModule;
-import com.sun.jersey.api.uri.UriBuilderImpl;
 
 /**
  * @author Andrew Phillips
@@ -49,7 +47,6 @@ public class HttpClientModule extends AbstractModule {
         toBind.putAll(checkNotNull(new PropertiesLoader(context).get(), "properties"));
         toBind.putAll(System.getProperties());
         bindProperties(binder(), toBind);
-        bind(UriBuilder.class).to(UriBuilderImpl.class);
     }
 
     private static Properties defaultProperties() {
