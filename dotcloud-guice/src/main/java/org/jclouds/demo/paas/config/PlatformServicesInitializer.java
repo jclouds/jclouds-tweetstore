@@ -42,7 +42,8 @@ import com.google.inject.Guice;
 public class PlatformServicesInitializer implements ServletContextListener {
     public static final String PLATFORM_SERVICES_ATTRIBUTE_NAME = PlatformServices.class.getName();
 
-    protected static final String URL_VARIABLE = "DOTCLOUD_WWW_HTTP_URL";
+    protected static final String HOST_VARIABLE = "DOTCLOUD_WWW_HTTP_HOST";
+    protected static final String PORT_VARIABLE = "WWW_HTTP_PORT";
 
     @Override
     public void contextInitialized(ServletContextEvent contextEvent) {
@@ -64,8 +65,8 @@ public class PlatformServicesInitializer implements ServletContextListener {
     }
 
     protected static String getBaseUrl(ServletContext context) {
-        // TODO: check if a private URL is available
-        return format("%s/%s", checkNotNull(System.getenv(URL_VARIABLE), URL_VARIABLE), context.getContextPath());
+        return format("http://%s:%s/%s", checkNotNull(System.getenv(HOST_VARIABLE), HOST_VARIABLE), 
+                checkNotNull(System.getenv(PORT_VARIABLE), PORT_VARIABLE), context.getContextPath());
     }
 
     // TODO: make the number and names of queues configurable
