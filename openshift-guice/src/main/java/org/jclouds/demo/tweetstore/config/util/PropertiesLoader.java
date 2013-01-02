@@ -47,7 +47,10 @@ public class PropertiesLoader implements Provider<Properties>{
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            Closeables.closeQuietly(input);
+            try {
+                Closeables.close(input, true);
+            } catch (IOException ignored) {
+            }
         }
         return props;
     }

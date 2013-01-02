@@ -19,7 +19,7 @@
 package org.jclouds.demo.tweetstore.integration;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.io.Closeables.closeQuietly;
+import static com.google.common.io.Closeables.close;
 import static java.lang.String.format;
 
 import java.io.File;
@@ -70,7 +70,7 @@ public class GoogleDevServer {
         try {
             props.store(targetFile, "test");
         } finally {
-            closeQuietly(targetFile);
+            close(targetFile, true);
         }
     }
 

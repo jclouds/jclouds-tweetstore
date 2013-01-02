@@ -18,7 +18,7 @@
  */
 package org.jclouds.demo.tweetstore.integration;
 
-import static com.google.common.io.Closeables.closeQuietly;
+import static com.google.common.io.Closeables.close;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -57,7 +57,7 @@ public class RunAtCloudServer {
         try {
             props.store(targetFile, "test");
         } finally {
-            closeQuietly(targetFile);
+            close(targetFile, true);
         }
     }
 

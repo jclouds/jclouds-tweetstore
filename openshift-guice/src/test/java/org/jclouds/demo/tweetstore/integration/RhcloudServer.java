@@ -19,7 +19,7 @@
 package org.jclouds.demo.tweetstore.integration;
 
 import static com.google.common.collect.Iterables.find;
-import static com.google.common.io.Closeables.closeQuietly;
+import static com.google.common.io.Closeables.close;
 import static java.lang.String.format;
 import static org.jclouds.demo.tweetstore.integration.util.Zips.zipDir;
 
@@ -82,7 +82,7 @@ public class RhcloudServer {
         try {
             props.store(targetFile, "test");
         } finally {
-            closeQuietly(targetFile);
+            close(targetFile, true);
         }
     }
 

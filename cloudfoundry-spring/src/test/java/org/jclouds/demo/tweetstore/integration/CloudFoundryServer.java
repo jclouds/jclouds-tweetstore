@@ -20,7 +20,7 @@ package org.jclouds.demo.tweetstore.integration;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.io.Closeables.closeQuietly;
+import static com.google.common.io.Closeables.close;
 import static java.lang.String.format;
 import static org.jclouds.demo.tweetstore.integration.util.Zips.zipDir;
 
@@ -84,7 +84,7 @@ public class CloudFoundryServer {
         try {
             props.store(targetFile, "test");
         } finally {
-            closeQuietly(targetFile);
+            close(targetFile, true);
         }
     }
 
