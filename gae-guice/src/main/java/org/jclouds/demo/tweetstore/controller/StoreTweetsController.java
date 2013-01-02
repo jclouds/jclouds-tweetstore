@@ -114,7 +114,7 @@ public class StoreTweetsController extends HttpServlet {
          try {
             String contextName = checkNotNull(request.getHeader("context"), "missing header context");
             logger.info("retrieving tweets");
-            addMyTweets(contextName, client.getMentions());
+            addMyTweets(contextName, client.getMentionsTimeline());
             logger.debug("done storing tweets");
             response.setContentType(MediaType.TEXT_PLAIN);
             response.getWriter().println("Done!");

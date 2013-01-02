@@ -111,7 +111,7 @@ public class TweetStoreLiveTest {
       Twitter client = new TwitterFactory(conf).getInstance();
       StoreTweetsController controller = new StoreTweetsController(contexts, container, client);
 
-      ResponseList<Status> statuses = client.getMentions();
+      ResponseList<Status> statuses = client.getMentionsTimeline();
 
       boolean deleted = false;
       for (BlobStoreContext context : contexts.values()) {
