@@ -20,12 +20,9 @@ package org.jclouds.demo.tweetstore.config.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.base.Predicates.notNull;
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Collections2.transform;
-import static com.google.common.collect.ImmutableSet.copyOf;
-import static com.google.common.collect.Maps.filterValues;
-import static org.jclouds.util.Maps2.fromKeys;
+import static com.google.common.collect.Maps.toMap;
 
 import java.util.Collection;
 import java.util.Map;
@@ -66,20 +63,20 @@ public class CredentialsCollector implements Function<Properties, Map<String, Cr
                         return matcher.group(1);
                     }
                 });
-        /*
-         * Providers without a credential property result in null values, which are
-         * removed from the returned map.
-         */
-        return filterValues(fromKeys(copyOf(providerNames), new Function<String, Credential>() {
-            @Override
-            public Credential apply(String providerName) {
-                String identity = properties.getProperty(providerName + IDENTITY_PROPERTY_SUFFIX);
-                String credential = properties.getProperty(providerName + CREDENTIAL_PROPERTY_SUFFIX);
-                return (((identity != null) && (credential != null)) 
-                        ? new Credential(identity, credential) 
-                        : null);
-            }
-        }), notNull());
+        Collection<String> providerNamesWithCredentials = filter(providerNames, new Predicate<String>() {
+                @Override
+                public boolean apply(String providerName) {
+                    return (properties.containsKey(providerName + IDENTITY_PROPERTY_SUFFIX)
+                            && properties.containsKey(providerName + CREDENTIAL_PROPERTY_SUFFIX));
+                }
+            });
+        return toMap(providerNamesWithCredentials, new Function<String, Credential>() {
+                @Override
+                public Credential apply(String providerName) {
+                    return new Credential(properties.getProperty(providerName + IDENTITY_PROPERTY_SUFFIX), 
+                                          properties.getProperty(providerName + CREDENTIAL_PROPERTY_SUFFIX));
+                }
+            });
     }
     
     public static class Credential {
