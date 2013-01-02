@@ -31,7 +31,6 @@ import static org.jclouds.demo.tweetstore.reference.TwitterConstants.PROPERTY_TW
 import static org.jclouds.demo.tweetstore.reference.TwitterConstants.PROPERTY_TWITTER_CONSUMER_SECRET;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -45,6 +44,7 @@ import javax.servlet.ServletException;
 import org.jclouds.ContextBuilder;
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.demo.tweetstore.config.util.CredentialsCollector;
+import org.jclouds.demo.tweetstore.config.util.PropertiesLoader;
 import org.jclouds.demo.tweetstore.controller.AddTweetsController;
 import org.jclouds.demo.tweetstore.controller.ClearTweetsController;
 import org.jclouds.demo.tweetstore.controller.EnqueueStoresController;
@@ -70,7 +70,6 @@ import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
-import com.google.common.io.Closeables;
 import com.google.inject.Module;
 
 /**
@@ -94,7 +93,7 @@ public class SpringServletConfig extends LoggingConfig implements ServletConfigA
 
    @PostConstruct
    public void initialize() throws IOException {
-      Properties props = loadJCloudsProperties();
+      Properties props = new PropertiesLoader(servletConfig.getServletContext()).get();
       LOGGER.trace("About to initialize members.");
 
       Module googleModule = new GoogleAppEngineConfigurationModule();
@@ -136,21 +135,6 @@ public class SpringServletConfig extends LoggingConfig implements ServletConfigA
        }
        checkState(!contexts.isEmpty(), "no credentials available for any requested  context");
        return contexts;
-   }
-   
-   private Properties loadJCloudsProperties() {
-      LOGGER.trace("About to read properties from '%s'", "/WEB-INF/jclouds.properties");
-      Properties props = new Properties();
-      InputStream input = servletConfig.getServletContext().getResourceAsStream("/WEB-INF/jclouds.properties");
-      try {
-         props.load(input);
-      } catch (IOException e) {
-         throw new RuntimeException(e);
-      } finally {
-         Closeables.closeQuietly(input);
-      }
-      LOGGER.trace("Properties successfully read.");
-      return props;
    }
 
    @Bean

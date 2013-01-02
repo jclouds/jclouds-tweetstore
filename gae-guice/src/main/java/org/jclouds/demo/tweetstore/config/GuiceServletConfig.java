@@ -30,17 +30,17 @@ import static org.jclouds.demo.tweetstore.reference.TwitterConstants.PROPERTY_TW
 import static org.jclouds.demo.tweetstore.reference.TwitterConstants.PROPERTY_TWITTER_CONSUMER_KEY;
 import static org.jclouds.demo.tweetstore.reference.TwitterConstants.PROPERTY_TWITTER_CONSUMER_SECRET;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.demo.tweetstore.config.util.CredentialsCollector;
+import org.jclouds.demo.tweetstore.config.util.PropertiesLoader;
 import org.jclouds.demo.tweetstore.controller.AddTweetsController;
 import org.jclouds.demo.tweetstore.controller.ClearTweetsController;
 import org.jclouds.demo.tweetstore.controller.EnqueueStoresController;
@@ -57,7 +57,6 @@ import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.repackaged.com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
-import com.google.common.io.Closeables;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -81,7 +80,9 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 
    @Override
    public void contextInitialized(ServletContextEvent servletContextEvent) {
-      Properties props = loadJCloudsProperties(servletContextEvent);
+      ServletContext servletContext = servletContextEvent.getServletContext();
+
+      Properties props = new PropertiesLoader(servletContext).get();
 
       Module googleModule = new GoogleAppEngineConfigurationModule();
       Set<Module> modules = ImmutableSet.<Module> of(googleModule);
@@ -121,19 +122,6 @@ public class GuiceServletConfig extends GuiceServletContextListener {
        }
        checkState(!contexts.isEmpty(), "no credentials available for any requested  context");
        return contexts;
-   }
-
-   private Properties loadJCloudsProperties(ServletContextEvent servletContextEvent) {
-      InputStream input = servletContextEvent.getServletContext().getResourceAsStream("/WEB-INF/jclouds.properties");
-      Properties props = new Properties();
-      try {
-         props.load(input);
-      } catch (IOException e) {
-         throw new RuntimeException(e);
-      } finally {
-         Closeables.closeQuietly(input);
-      }
-      return props;
    }
 
    @Override
