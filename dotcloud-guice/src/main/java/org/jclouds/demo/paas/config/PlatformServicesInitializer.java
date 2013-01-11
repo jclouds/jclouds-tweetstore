@@ -65,7 +65,7 @@ public class PlatformServicesInitializer implements ServletContextListener {
     }
 
     protected static String getBaseUrl(ServletContext context) {
-        return format("http://%s:%s/%s", checkNotNull(System.getenv(HOST_VARIABLE), HOST_VARIABLE), 
+        return format("http://%s:%s%s", checkNotNull(System.getenv(HOST_VARIABLE), HOST_VARIABLE), 
                 checkNotNull(System.getenv(PORT_VARIABLE), PORT_VARIABLE), context.getContextPath());
     }
 
