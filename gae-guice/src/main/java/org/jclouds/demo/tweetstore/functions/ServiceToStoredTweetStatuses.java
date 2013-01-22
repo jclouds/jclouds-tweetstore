@@ -27,7 +27,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.jclouds.Context;
 import org.jclouds.blobstore.BlobMap;
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.demo.tweetstore.domain.StoredTweetStatus;
@@ -56,7 +55,7 @@ public class ServiceToStoredTweetStatuses implements Function<String, Iterable<S
 
    public Iterable<StoredTweetStatus> apply(String service) {
       BlobStoreContext context = contexts.get(service);
-      String host = URI.create(context.unwrap(Context.class).getProviderMetadata()
+      String host = URI.create(context.unwrap().getProviderMetadata()
               .getEndpoint()).getHost();
       try {
          BlobMap blobMap = context.createBlobMap(container);

@@ -37,7 +37,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-import org.jclouds.Context;
 import org.jclouds.ContextBuilder;
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.demo.tweetstore.config.GuiceServletConfig;
@@ -120,7 +119,7 @@ public class TweetStoreLiveTest {
          try {
             if (context.getBlobStore().containerExists(container)) {
                System.err.printf("deleting container %s at %s%n", container, 
-                       context.unwrap(Context.class).getProviderMetadata().getEndpoint());
+                       context.unwrap().getProviderMetadata().getEndpoint());
                context.getBlobStore().deleteContainer(container);
                deleted = true;
             }
@@ -134,7 +133,7 @@ public class TweetStoreLiveTest {
       }
       for (BlobStoreContext context : contexts.values()) {
          System.err.printf("creating container %s at %s%n", container, 
-                 context.unwrap(Context.class).getProviderMetadata().getEndpoint());
+                 context.unwrap().getProviderMetadata().getEndpoint());
          context.getBlobStore().createContainerInLocation(null, container);
       }
 
@@ -212,7 +211,7 @@ public class TweetStoreLiveTest {
       System.err.println("sleeping 20 seconds to allow for eventual consistency delay");
       Thread.sleep(20000);
       for (BlobStoreContext context : contexts.values()) {
-         assert context.createInputStreamMap(container).size() > 0 : context.unwrap(Context.class).getProviderMetadata().getEndpoint();
+         assert context.createInputStreamMap(container).size() > 0 : context.unwrap().getProviderMetadata().getEndpoint();
       }
    }
 
