@@ -22,13 +22,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.inject.name.Names.bindProperties;
 import static org.jclouds.Constants.*;
 
+import java.net.Proxy;
+import java.net.URI;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
 
 import org.jclouds.demo.tweetstore.config.util.PropertiesLoader;
+import org.jclouds.proxy.ProxyForURI;
 
+import com.google.common.base.Function;
 import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
 
 /**
  * @author Andrew Phillips
@@ -42,6 +47,7 @@ public class HttpClientModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        bind(new TypeLiteral<Function<URI, Proxy>>() {}).to(ProxyForURI.class);
         // URL connection defaults
         Properties toBind = defaultProperties();
         toBind.putAll(checkNotNull(new PropertiesLoader(context).get(), "properties"));
