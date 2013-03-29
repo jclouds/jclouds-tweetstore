@@ -131,6 +131,15 @@
                             <serverId>google-appengine</serverId>
                             <sdkDir>${appengine.sdk.root}</sdkDir>
                         </configuration>
+                        <!-- override the '[1.6.1,)' version in the plugin that can cause unavailable SNAPSHOTS to be requested -->
+                        <dependencies>
+                            <dependency>
+                                <groupId>net.kindleit</groupId>
+                                <artifactId>gae-runtime</artifactId>
+                                <version>1.7.5.1</version>
+                                <type>pom</type>
+                            </dependency>
+                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
