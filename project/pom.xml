@@ -21,9 +21,9 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>4</version>
+    <groupId>org.apache</groupId>
+    <artifactId>apache</artifactId>
+    <version>13</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jclouds.tweetstore</groupId>
@@ -55,8 +55,8 @@
   </scm>
   <repositories>
     <repository>
-      <id>sonatype-nexus-snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <id>apache-snapshots</id>
+      <url>https://repository.apache.org/content/repositories/snapshots</url>
       <releases>
         <enabled>false</enabled>
       </releases>
@@ -67,12 +67,12 @@
   </repositories>
   <dependencies>
     <dependency>
-      <groupId>org.jclouds</groupId>
+      <groupId>org.apache.jclouds</groupId>
       <artifactId>jclouds-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.jclouds</groupId>
+      <groupId>org.apache.jclouds</groupId>
       <artifactId>jclouds-blobstore</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -82,38 +82,38 @@
       <version>[2.2,)</version>
     </dependency>
     <dependency>
-      <groupId>org.jclouds</groupId>
+      <groupId>org.apache.jclouds</groupId>
       <artifactId>jclouds-blobstore</artifactId>
       <version>${project.version}</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jclouds.provider</groupId>
+      <groupId>org.apache.jclouds.provider</groupId>
       <artifactId>aws-s3</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.jclouds.provider</groupId>
+      <groupId>org.apache.jclouds.provider</groupId>
       <artifactId>cloudfiles-us</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.jclouds.provider</groupId>
+      <groupId>org.apache.jclouds.provider</groupId>
       <artifactId>azureblob</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.jclouds.provider</groupId>
+      <groupId>org.apache.jclouds.provider</groupId>
       <artifactId>cloudonestorage</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.jclouds.provider</groupId>
+      <groupId>org.apache.jclouds.provider</groupId>
       <artifactId>ninefold-storage</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
@@ -173,7 +173,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jclouds.driver</groupId>
+      <groupId>org.apache.jclouds.driver</groupId>
       <artifactId>jclouds-log4j</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
@@ -232,7 +232,7 @@
             </goals>
             <configuration>
               <resourceBundles>
-                <resourceBundle>org.jclouds:jclouds-resources:${project.version}</resourceBundle>
+                <resourceBundle>org.apache.jclouds:jclouds-resources:${project.version}</resourceBundle>
               </resourceBundles>
             </configuration>
           </execution>

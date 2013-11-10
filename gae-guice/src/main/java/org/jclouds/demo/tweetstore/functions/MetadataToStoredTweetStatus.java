@@ -20,8 +20,9 @@ package org.jclouds.demo.tweetstore.functions;
 
 import javax.annotation.Resource;
 
-import org.jclouds.blobstore.BlobMap;
+import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.domain.Blob;
+import org.jclouds.blobstore.domain.StorageMetadata;
 import org.jclouds.demo.tweetstore.domain.StoredTweetStatus;
 import org.jclouds.demo.tweetstore.reference.TweetStoreConstants;
 import org.jclouds.logging.Logger;
@@ -33,29 +34,30 @@ import com.google.common.base.Function;
  * 
  * @author Adrian Cole
  */
-public class KeyToStoredTweetStatus implements Function<String, StoredTweetStatus> {
+public class MetadataToStoredTweetStatus implements Function<StorageMetadata, StoredTweetStatus> {
    private final String host;
-   private final BlobMap map;
+   private final BlobStore store;
    private final String service;
    private final String container;
 
    @Resource
    protected Logger logger = Logger.NULL;
 
-   KeyToStoredTweetStatus(BlobMap map, String service, String host, String container) {
+   MetadataToStoredTweetStatus(BlobStore store, String service, String host, String container) {
       this.host = host;
-      this.map = map;
+      this.store = store;
       this.service = service;
       this.container = container;
    }
 
-   public StoredTweetStatus apply(String id) {
+   public StoredTweetStatus apply(StorageMetadata blobMetadata) {
+      String id = blobMetadata.getName();
       String status;
       String from;
       String tweet;
       try {
          long start = System.currentTimeMillis();
-         Blob blob = map.get(id);
+         Blob blob = store.getBlob(container, id);
          status = ((System.currentTimeMillis() - start) + "ms");
          from = blob.getMetadata().getUserMetadata().get(TweetStoreConstants.SENDER_NAME);
          tweet = Strings2.toString(blob.getPayload());
