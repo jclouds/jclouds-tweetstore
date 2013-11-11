@@ -20,15 +20,17 @@ package org.jclouds.demo.tweetstore.functions;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.jclouds.blobstore.BlobMap;
+import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.BlobStoreContext;
+import org.jclouds.blobstore.domain.StorageMetadata;
+import org.jclouds.blobstore.options.ListContainerOptions;
+import org.jclouds.blobstore.strategy.internal.ConcatenateContainerLists;
 import org.jclouds.demo.tweetstore.domain.StoredTweetStatus;
 import org.jclouds.demo.tweetstore.reference.TweetStoreConstants;
 import org.jclouds.logging.Logger;
@@ -57,9 +59,10 @@ public class ServiceToStoredTweetStatuses implements Function<String, Iterable<S
       BlobStoreContext context = contexts.get(service);
       String host = URI.create(context.unwrap().getProviderMetadata().getEndpoint()).getHost();
       try {
-         BlobMap blobMap = context.createBlobMap(container);
-         Set<String> blobs = blobMap.keySet();
-         return Iterables.transform(blobs, new KeyToStoredTweetStatus(blobMap, service, host,
+         BlobStore store = context.getBlobStore();
+         Iterable<? extends StorageMetadata> allBlobMetadata = 
+            new ConcatenateContainerLists(store).execute(container, ListContainerOptions.NONE);
+         return Iterables.transform(allBlobMetadata, new MetadataToStoredTweetStatus(store, service, host,
                   container));
       } catch (Exception e) {
          StoredTweetStatus result = new StoredTweetStatus(service, host, container, null, null,
