@@ -23,6 +23,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Predicates.in;
 import static com.google.common.collect.ImmutableSet.copyOf;
 import static com.google.common.collect.Sets.filter;
+import static org.jclouds.Constants.PROPERTY_STRIP_EXPECT_HEADER;
 import static org.jclouds.demo.tweetstore.reference.TweetStoreConstants.PROPERTY_TWEETSTORE_BLOBSTORES;
 import static org.jclouds.demo.tweetstore.reference.TweetStoreConstants.PROPERTY_TWEETSTORE_CONTAINER;
 import static org.jclouds.demo.tweetstore.reference.TwitterConstants.PROPERTY_TWITTER_ACCESSTOKEN;
@@ -83,6 +84,8 @@ public class GuiceServletConfig extends GuiceServletContextListener {
       ServletContext servletContext = servletContextEvent.getServletContext();
 
       Properties props = new PropertiesLoader(servletContext).get();
+      // skip Expect-100 - see https://issues.apache.org/jira/browse/JCLOUDS-181
+      props.put(PROPERTY_STRIP_EXPECT_HEADER, true);
 
       Module googleModule = new GoogleAppEngineConfigurationModule();
       Set<Module> modules = ImmutableSet.<Module> of(googleModule);
