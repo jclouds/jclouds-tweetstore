@@ -18,6 +18,7 @@
     under the License.
 
 --%>
+<%@ page import="org.jclouds.JcloudsVersion" %>
 <html>
 <head>
 <title>jclouds: anyweight cloudware for java</title>
@@ -25,6 +26,7 @@
 <body>
 <h2>Welcome!</h2>
 <p>Click <a href="/tweets/get">here</a> to see tweets about jclouds.</p>
+<p>jclouds version: <%= JcloudsVersion.get().toString() %></p>
 <p><img src="http://di388e0fcqllf.cloudfront.net/images/badges/powered-by-cloudbees-button.png" 
 alt="Powered by RUN@cloud" /></p>
 </body>
