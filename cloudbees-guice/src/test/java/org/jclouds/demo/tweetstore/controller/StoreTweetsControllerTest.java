@@ -30,7 +30,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 
 import org.jclouds.ContextBuilder;
-import org.jclouds.blobstore.BlobMap;
+import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.blobstore.TransientApiMetadata;
 import org.jclouds.blobstore.domain.Blob;
@@ -63,7 +63,7 @@ public class StoreTweetsControllerTest {
                "test1", ContextBuilder.newBuilder(transientApiMetadata).build(BlobStoreContext.class), 
                "test2", ContextBuilder.newBuilder(transientApiMetadata).build(BlobStoreContext.class));
       for (BlobStoreContext blobstore : contexts.values()) {
-         blobstore.getAsyncBlobStore().createContainerInLocation(null, "favo").get();
+         blobstore.getBlobStore().createContainerInLocation(null, "favo");
       }
       return contexts;
    }
@@ -102,14 +102,14 @@ public class StoreTweetsControllerTest {
       verify(jimmyStatus);
 
       for (Entry<String, BlobStoreContext> entry : stores.entrySet()) {
-         BlobMap map = entry.getValue().createBlobMap("favo");
-         Blob frankBlob = map.get("1");
+         BlobStore store = entry.getValue().getBlobStore();
+         Blob frankBlob = store.getBlob("favo", "1");
          assertEquals(frankBlob.getMetadata().getName(), "1");
          assertEquals(frankBlob.getMetadata().getUserMetadata().get(TweetStoreConstants.SENDER_NAME), "frank");
          assertEquals(frankBlob.getMetadata().getContentMetadata().getContentType(), "text/plain");
          assertEquals(Strings2.toString(frankBlob.getPayload()), "I love beans!");
 
-         Blob jimmyBlob = map.get("2");
+         Blob jimmyBlob = store.getBlob("favo", "2");
          assertEquals(jimmyBlob.getMetadata().getName(), "2");
          assertEquals(jimmyBlob.getMetadata().getUserMetadata().get(TweetStoreConstants.SENDER_NAME), "jimmy");
          assertEquals(jimmyBlob.getMetadata().getContentMetadata().getContentType(), "text/plain");

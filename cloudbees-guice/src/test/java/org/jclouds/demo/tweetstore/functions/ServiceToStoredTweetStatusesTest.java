@@ -49,11 +49,11 @@ public class ServiceToStoredTweetStatusesTest {
       TransientApiMetadata transientApiMetadata = TransientApiMetadata.builder().build();
       for (String name : new String[] { "1", "2" }) {
          BlobStoreContext context = ContextBuilder.newBuilder(transientApiMetadata).build(BlobStoreContext.class);
-         context.getAsyncBlobStore().createContainerInLocation(null, container).get();
-         Blob blob = context.getAsyncBlobStore().blobBuilder("1").build();
+         context.getBlobStore().createContainerInLocation(null, container);
+         Blob blob = context.getBlobStore().blobBuilder("1").build();
          blob.getMetadata().getUserMetadata().put(TweetStoreConstants.SENDER_NAME, "frank");
          blob.setPayload("I love beans!");
-         context.getAsyncBlobStore().putBlob(container, blob).get();
+         context.getBlobStore().putBlob(container, blob);
          services.put(name, context);
       }
       return services;
