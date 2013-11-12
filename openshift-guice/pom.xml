@@ -61,6 +61,24 @@
             	</exclusion>
             </exclusions>
         </dependency>
+        <!-- to resolve https://code.google.com/p/guava-libraries/issues/detail?id=1527 -->
+        <dependency>
+            <groupId>org.apache.jclouds</groupId>
+            <artifactId>jclouds-core</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>15.0</version>
+            <classifier>cdi1.0</classifier>
+        </dependency>
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-archiver</artifactId>
