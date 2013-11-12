@@ -23,6 +23,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Predicates.in;
 import static com.google.common.collect.ImmutableSet.copyOf;
 import static com.google.common.collect.Sets.filter;
+import static org.jclouds.Constants.PROPERTY_STRIP_EXPECT_HEADER;
 import static org.jclouds.demo.tweetstore.reference.TweetStoreConstants.PROPERTY_TWEETSTORE_BLOBSTORES;
 import static org.jclouds.demo.tweetstore.reference.TweetStoreConstants.PROPERTY_TWEETSTORE_CONTAINER;
 import static org.jclouds.demo.tweetstore.reference.TwitterConstants.PROPERTY_TWITTER_ACCESSTOKEN;
@@ -94,6 +95,8 @@ public class SpringServletConfig extends LoggingConfig implements ServletConfigA
    @PostConstruct
    public void initialize() throws IOException {
       Properties props = new PropertiesLoader(servletConfig.getServletContext()).get();
+      // skip Expect-100 - see https://issues.apache.org/jira/browse/JCLOUDS-181
+      props.put(PROPERTY_STRIP_EXPECT_HEADER, true);
       LOGGER.trace("About to initialize members.");
 
       Module googleModule = new GoogleAppEngineConfigurationModule();
