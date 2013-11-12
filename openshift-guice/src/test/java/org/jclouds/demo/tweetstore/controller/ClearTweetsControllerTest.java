@@ -48,7 +48,7 @@ public class ClearTweetsControllerTest {
                         "test2", ContextBuilder.newBuilder(transientApiMetadata).build(BlobStoreContext.class));
         for (BlobStoreContext blobstore : contexts.values()) {
             blobstore.getBlobStore().createContainerInLocation(null, container);
-            Blob blob = blobstore.getAsyncBlobStore().blobBuilder("1").build();
+            Blob blob = blobstore.getBlobStore().blobBuilder("1").build();
             blob.getMetadata().getUserMetadata().put(TweetStoreConstants.SENDER_NAME, "frank");
             blob.setPayload("I love beans!");
             blobstore.getBlobStore().putBlob(container, blob);

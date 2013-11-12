@@ -210,7 +210,7 @@ public class TweetStoreLiveTest {
       System.err.println("sleeping 20 seconds to allow for eventual consistency delay");
       Thread.sleep(20000);
       for (BlobStoreContext context : contexts.values()) {
-         assert context.createInputStreamMap(container).size() > 0 : context.unwrap().getProviderMetadata().getEndpoint();
+         assert context.getBlobStore().list(container).size() > 0 : context.unwrap().getProviderMetadata().getEndpoint();
       }
    }
 
