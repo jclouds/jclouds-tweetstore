@@ -33,10 +33,12 @@
     <description>jclouds TweetStore for Cloud Foundry using Spring for Dependency Injection</description>
 
     <properties>
-        <cloudfoundry.version>0.8.1</cloudfoundry.version>
+        <cloudfoundry.version>1.0.1</cloudfoundry.version>
+        <cloudfoundry.target>https://api.run.pivotal.io</cloudfoundry.target>
         <cloudfoundry.applicationid>jclouds-tweetstore</cloudfoundry.applicationid>
-        <test.cloudfoundry.target>http://api.cloudfoundry.com</test.cloudfoundry.target>
-        <test.cloudfoundry.address>test-${cloudfoundry.applicationid}.cloudfoundry.com</test.cloudfoundry.address>
+        <cloudfoundry.address>${cloudfoundry.applicationid}.cfapps.io</cloudfoundry.address>
+        <test.cloudfoundry.target>${cloudfoundry.target}</test.cloudfoundry.target>
+        <test.cloudfoundry.address>test-${cloudfoundry.address}</test.cloudfoundry.address>
         <test.cloudfoundry.port>80</test.cloudfoundry.port>
         <jclouds.tweetstore.container>jclouds-cf-tweetstore-spring</jclouds.tweetstore.container>
     </properties>
@@ -46,7 +48,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>3.0.5.RELEASE</version>
+            <version>3.2.2.RELEASE</version>
             <!-- using the SLF4J/commons-logging bridge -->
             <exclusions>
                 <exclusion>
@@ -58,7 +60,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>3.0.5.RELEASE</version>
+            <version>3.2.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -83,12 +85,12 @@
         <dependency>
             <groupId>org.cloudfoundry</groupId>
             <artifactId>cloudfoundry-runtime</artifactId>
-            <version>${cloudfoundry.version}</version>
+            <version>0.8.6</version>
         </dependency>
         <dependency>
             <groupId>org.cloudfoundry</groupId>
             <artifactId>cloudfoundry-client-lib</artifactId>
-            <version>0.7.1</version>
+            <version>${cloudfoundry.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -176,13 +178,15 @@
                     <plugin>
                         <groupId>org.cloudfoundry</groupId>
                         <artifactId>cf-maven-plugin</artifactId>
-                        <version>1.0.0.M1</version>
+                        <version>${cloudfoundry.version}</version>
                         <configuration>
-                            <target>http://api.cloudfoundry.com</target>
+                            <target>${cloudfoundry.target}</target>
                             <username>${cloudfoundry.username}</username>
                             <password>${cloudfoundry.password}</password>
+                            <org>jclouds</org>
+                            <space>development</space>
                             <appname>${cloudfoundry.applicationid}</appname>
-                            <memory>256</memory>
+                            <url>${cloudfoundry.address}</url>
                         </configuration>
                     </plugin>
                 </plugins>
