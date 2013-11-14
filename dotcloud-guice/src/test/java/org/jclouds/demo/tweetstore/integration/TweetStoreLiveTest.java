@@ -82,8 +82,9 @@ public class TweetStoreLiveTest {
    @BeforeTest
    void clearAndCreateContainers() throws InterruptedException, ExecutionException, TimeoutException, IOException,
          TwitterException {
-       container = getRequiredSystemProperty(PROPERTY_TWEETSTORE_CONTAINER);
-
+      container = getRequiredSystemProperty(PROPERTY_TWEETSTORE_CONTAINER);
+      // skip Expect-100 - see https://issues.apache.org/jira/browse/JCLOUDS-181
+      props.setProperty(PROPERTY_STRIP_EXPECT_HEADER, Boolean.TRUE.toString());
       props.setProperty(PROPERTY_TWEETSTORE_CONTAINER, container);
 
       // put all identity/credential pairs into the client

@@ -19,6 +19,7 @@
 package org.jclouds.demo.tweetstore.integration;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.jclouds.Constants.PROPERTY_STRIP_EXPECT_HEADER;
 import static org.jclouds.demo.tweetstore.reference.TweetStoreConstants.PROPERTY_TWEETSTORE_BLOBSTORES;
 import static org.jclouds.demo.tweetstore.reference.TweetStoreConstants.PROPERTY_TWEETSTORE_CONTAINER;
 import static org.jclouds.demo.tweetstore.reference.TwitterConstants.PROPERTY_TWITTER_ACCESSTOKEN;
@@ -84,8 +85,9 @@ public class TweetStoreLiveTest {
    @BeforeTest
    void clearAndCreateContainers() throws InterruptedException, ExecutionException, TimeoutException, IOException,
          TwitterException {
-       container = getRequiredSystemProperty(PROPERTY_TWEETSTORE_CONTAINER);
-
+      container = getRequiredSystemProperty(PROPERTY_TWEETSTORE_CONTAINER);
+      // skip Expect-100 - see https://issues.apache.org/jira/browse/JCLOUDS-181
+      props.setProperty(PROPERTY_STRIP_EXPECT_HEADER, Boolean.TRUE.toString());
       props.setProperty(PROPERTY_TWEETSTORE_CONTAINER, container);
       props.setProperty(SpringServletConfig.PROPERTY_BLOBSTORE_CONTEXTS, Joiner.on(',').join(blobstores));
 
