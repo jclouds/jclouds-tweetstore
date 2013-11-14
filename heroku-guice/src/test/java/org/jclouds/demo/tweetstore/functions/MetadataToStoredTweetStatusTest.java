@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import org.jclouds.ContextBuilder;
-import org.jclouds.blobstore.BlobMap;
+import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.blobstore.TransientApiMetadata;
 import org.jclouds.blobstore.domain.Blob;
@@ -34,32 +34,32 @@ import org.testng.annotations.Test;
 
 /**
  * Tests behavior of {@code KeyToStoredTweetStatus}
- * 
+ *
  * @author Adrian Cole
  */
 @Test(groups = "unit")
-public class KeyToStoredTweetStatusTest {
+public class MetadataToStoredTweetStatusTest {
 
-   BlobMap createMap() throws InterruptedException, ExecutionException {
-      BlobStoreContext context = 
+   BlobStore createStoreAndContainer(String container) throws InterruptedException, ExecutionException {
+      BlobStoreContext context =
           ContextBuilder.newBuilder(TransientApiMetadata.builder().build()).build(BlobStoreContext.class);
-      String container = KeyToStoredTweetStatusTest.class.getName() + "#container"; 
-      context.getBlobStore().createContainerInLocation(null, container);
-      return context.createBlobMap(container);
+      BlobStore store = context.getBlobStore();
+      store.createContainerInLocation(null, container);
+      return store;
    }
 
    public void testStoreTweets() throws IOException, InterruptedException, ExecutionException {
-      BlobMap map = createMap();
-      Blob blob = map.blobBuilder().name("1").build();
+      String container = "test1";
+      BlobStore store = createStoreAndContainer(container);
+      Blob blob = store.blobBuilder("1").build();
       blob.getMetadata().getUserMetadata().put(TweetStoreConstants.SENDER_NAME, "frank");
       blob.setPayload("I love beans!");
-      map.put("1", blob);
+      store.putBlob(container, blob);
       String host = "localhost";
       String service = "stub";
-      String container = "tweetstore";
 
-      KeyToStoredTweetStatus function = new KeyToStoredTweetStatus(map, service, host, container);
-      StoredTweetStatus result = function.apply("1");
+      MetadataToStoredTweetStatus function = new MetadataToStoredTweetStatus(store, service, host, container);
+      StoredTweetStatus result = function.apply(blob.getMetadata());
 
       StoredTweetStatus expected = new StoredTweetStatus(service, host, container, "1", "frank",
                "I love beans!", null);

@@ -30,7 +30,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 
 import org.jclouds.ContextBuilder;
-import org.jclouds.blobstore.BlobMap;
+import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.blobstore.TransientApiMetadata;
 import org.jclouds.blobstore.domain.Blob;
@@ -57,21 +57,20 @@ public class StoreTweetsControllerTest {
       return createMock(Twitter.class);
    }
 
-   Map<String, BlobStoreContext> createBlobStores(String container) throws InterruptedException, ExecutionException {
+   Map<String, BlobStoreContext> createBlobStores() throws InterruptedException, ExecutionException {
       TransientApiMetadata transientApiMetadata = TransientApiMetadata.builder().build();
       Map<String, BlobStoreContext> contexts = ImmutableMap.<String, BlobStoreContext>of(
                "test1", ContextBuilder.newBuilder(transientApiMetadata).build(BlobStoreContext.class), 
                "test2", ContextBuilder.newBuilder(transientApiMetadata).build(BlobStoreContext.class));
       for (BlobStoreContext blobstore : contexts.values()) {
-         blobstore.getAsyncBlobStore().createContainerInLocation(null, container).get();
+         blobstore.getBlobStore().createContainerInLocation(null, "favo");
       }
       return contexts;
    }
 
    public void testStoreTweets() throws IOException, InterruptedException, ExecutionException {
-      String container = StoreTweetsControllerTest.class.getName() + "#container";
-      Map<String, BlobStoreContext> stores = createBlobStores(container);
-      StoreTweetsController function = new StoreTweetsController(stores, container, createTwitter());
+      Map<String, BlobStoreContext> stores = createBlobStores();
+      StoreTweetsController function = new StoreTweetsController(stores, "favo", createTwitter());
 
       User frank = createMock(User.class);
       expect(frank.getScreenName()).andReturn("frank").atLeastOnce();
@@ -103,14 +102,14 @@ public class StoreTweetsControllerTest {
       verify(jimmyStatus);
 
       for (Entry<String, BlobStoreContext> entry : stores.entrySet()) {
-         BlobMap map = entry.getValue().createBlobMap(container);
-         Blob frankBlob = map.get("1");
+         BlobStore store = entry.getValue().getBlobStore();
+         Blob frankBlob = store.getBlob("favo", "1");
          assertEquals(frankBlob.getMetadata().getName(), "1");
          assertEquals(frankBlob.getMetadata().getUserMetadata().get(TweetStoreConstants.SENDER_NAME), "frank");
          assertEquals(frankBlob.getMetadata().getContentMetadata().getContentType(), "text/plain");
          assertEquals(Strings2.toString(frankBlob.getPayload()), "I love beans!");
 
-         Blob jimmyBlob = map.get("2");
+         Blob jimmyBlob = store.getBlob("favo", "2");
          assertEquals(jimmyBlob.getMetadata().getName(), "2");
          assertEquals(jimmyBlob.getMetadata().getUserMetadata().get(TweetStoreConstants.SENDER_NAME), "jimmy");
          assertEquals(jimmyBlob.getMetadata().getContentMetadata().getContentType(), "text/plain");

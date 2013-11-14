@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 
-import org.jclouds.blobstore.BlobMap;
+import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.blobstore.domain.Blob;
 import org.jclouds.demo.tweetstore.reference.TweetStoreConstants;
@@ -57,14 +57,14 @@ import com.google.common.base.Function;
 public class StoreTweetsController extends HttpServlet {
     
    private static final class StatusToBlob implements Function<Status, Blob> {
-      private final BlobMap map;
+      private final BlobStore store;
 
-      private StatusToBlob(BlobMap map) {
-         this.map = map;
+      private StatusToBlob(BlobStore store) {
+         this.store = store;
       }
 
       public Blob apply(Status from) {
-         Blob to = map.blobBuilder().name(from.getId() + "").build();
+         Blob to = store.blobBuilder(from.getId() + "").build();
          to.setPayload(from.getText());
          to.getPayload().getContentMetadata().setContentType(MediaType.TEXT_PLAIN);
          to.getMetadata().getUserMetadata().put(TweetStoreConstants.SENDER_NAME, from.getUser().getScreenName());
@@ -95,12 +95,13 @@ public class StoreTweetsController extends HttpServlet {
    public void addMyTweets(String contextName, Iterable<Status> responseList) {
       BlobStoreContext context = checkNotNull(contexts.get(contextName), "no context for " + contextName + " in "
             + contexts.keySet());
-      BlobMap map = context.createBlobMap(container);
+      BlobStore store = context.getBlobStore();
+      store.createContainerInLocation(null, container);
       for (Status status : responseList) {
          Blob blob = null;
          try {
-            blob = new StatusToBlob(map).apply(status);
-            map.put(status.getId() + "", blob);
+            blob = new StatusToBlob(store).apply(status);
+            store.putBlob(container, blob);
          } catch (AuthorizationException e) {
             throw e;
          } catch (Exception e) {
