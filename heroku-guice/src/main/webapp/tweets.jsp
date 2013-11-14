@@ -18,7 +18,7 @@
     under the License.
 
 --%>
-<%@ page buffer="20kb"%>
+<%@ page import="org.jclouds.JcloudsVersion" buffer="20kb"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <html>
 <head>
@@ -99,6 +99,9 @@ overflow-y:auto;
   </display:table>
   </div>
   </td>
+</tr>
+<tr>
+  <td>jclouds version: <%= JcloudsVersion.get().toString() %></td>
 </tr>
 <tr>
   <td><img src="/images/heroku-logo.png" alt="Powered by Heroku" /></td>
