@@ -38,8 +38,8 @@
     </license>
   </licenses>
   <organization>
-    <name>jclouds</name>
-    <url>http://www.jclouds.org/</url>
+    <name>Apache jclouds</name>
+    <url>http://jclouds.apache.org/</url>
   </organization>
   <properties>
     <maven.compile.source>1.6</maven.compile.source>
