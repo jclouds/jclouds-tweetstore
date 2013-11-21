@@ -186,6 +186,8 @@
                             <org>jclouds</org>
                             <space>development</space>
                             <appname>${cloudfoundry.applicationid}</appname>
+                            <!-- default value ${project.build.directory}/${project.build.finalName}.war finds the WAR downloaded from the repo -->
+                            <path>${project.build.directory}/${project.artifactId}.war</path>
                             <url>${cloudfoundry.address}</url>
                         </configuration>
                     </plugin>
