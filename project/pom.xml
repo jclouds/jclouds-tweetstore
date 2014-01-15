@@ -223,7 +223,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-remote-resources-plugin</artifactId>
-        <version>1.3</version>
+        <version>1.5</version>
         <executions>
           <execution>
             <id>process-remote-resources</id>
@@ -534,7 +534,7 @@
         <plugins>
           <plugin>
             <artifactId>maven-remote-resources-plugin</artifactId>
-            <version>1.3</version>
+            <version>1.5</version>
             <configuration>
               <!-- prevents the maven-war-plugin from including the resources in WEB-INF/classes -->
               <attached>false</attached>
@@ -548,7 +548,7 @@
                 <configuration>
                   <resourceBundles>
                     <!-- tweetstore.instance is set in child projects -->
-                    <resourceBundle>${project.groupId}:jclouds-demos-tweetstore-jclouds-properties:4-${tweetstore.instance}</resourceBundle>
+                    <resourceBundle>${project.groupId}:jclouds-demos-tweetstore-jclouds-properties:4:jar:${tweetstore.instance}</resourceBundle>
                   </resourceBundles>
                 </configuration>
               </execution>
