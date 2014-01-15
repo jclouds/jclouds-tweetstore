@@ -33,6 +33,7 @@
   <modules>
     <module>cloudbees-guice</module>
     <module>cloudfoundry-spring</module>
+    <module>dokku-guice</module>
     <module>gae-guice</module>
     <module>gae-spring</module>
     <module>heroku-guice</module>
