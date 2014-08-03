@@ -60,7 +60,7 @@ public class MetadataToStoredTweetStatus implements Function<StorageMetadata, St
          Blob blob = store.getBlob(container, id);
          status = ((System.currentTimeMillis() - start) + "ms");
          from = blob.getMetadata().getUserMetadata().get(TweetStoreConstants.SENDER_NAME);
-         tweet = Strings2.toString(blob.getPayload());
+         tweet = Strings2.toStringAndClose(blob.getPayload().openStream());
       } catch (Exception e) {
          logger.error(e, "Error listing container %s//%s/%s", service, container, id);
          status = (e.getMessage());
