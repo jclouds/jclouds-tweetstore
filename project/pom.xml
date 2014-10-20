@@ -45,7 +45,7 @@
     <maven.compile.source>1.7</maven.compile.source>
     <maven.compile.target>1.7</maven.compile.target>
     <remoteResourcesDirectory>target/maven-shared-archive-resources</remoteResourcesDirectory>
-    <jclouds.tweetstore.blobstores>cloudonestorage,ninefold-storage</jclouds.tweetstore.blobstores>
+    <jclouds.tweetstore.blobstores>cloudonestorage</jclouds.tweetstore.blobstores>
   </properties>
   <scm>
     <connection>scm:git:git://github.com/jclouds/jclouds-tweetstore.git</connection>

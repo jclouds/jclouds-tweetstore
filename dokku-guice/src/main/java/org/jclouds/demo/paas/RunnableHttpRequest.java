@@ -70,6 +70,6 @@ public class RunnableHttpRequest implements Runnable {
 
     @Override
     public void run() {
-        httpClient.submit(new HttpCommand(request));
+        httpClient.invoke(new HttpCommand(request));
     }
 }

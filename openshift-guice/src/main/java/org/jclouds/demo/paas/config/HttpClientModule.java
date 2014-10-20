@@ -62,7 +62,6 @@ public class HttpClientModule extends AbstractModule {
         props.setProperty(PROPERTY_SO_TIMEOUT, 60000 + "");
         props.setProperty(PROPERTY_CONNECTION_TIMEOUT, 60000 + "");
         props.setProperty(PROPERTY_USER_THREADS, 0 + "");
-        props.setProperty(PROPERTY_IO_WORKER_THREADS, 20 + "");
         return props;
      }
 }
